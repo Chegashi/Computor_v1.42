@@ -22,9 +22,9 @@ def printComplexNumber(z):
 
 class polynom:
     def __init__(self, s):
-        self.a = s[0]
+        self.a = s[2]
         self.b = s[1]
-        self.c = s[2]
+        self.c = s[0]
         self.delta = self.b ** 2 - 4 * self.a * self.c
         self.ReducedForm()
         self.Degree()

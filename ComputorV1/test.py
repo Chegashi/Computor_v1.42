@@ -24,3 +24,4 @@ is_polynomial("X^03")
 is_polynomial("5^02")
 is_polynomial("-5.22225*X^370 + 5333.5*X^30 - 4*X^20")
 is_polynomial("-5.22225*X^3 + 5333.5*X^3 - 4*X^2")
+00
