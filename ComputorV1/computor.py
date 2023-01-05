@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/goinfre/mochegri/miniconda3/envs/42AI-mochegri/bin/python3
 from polynom import polynom
 from sys import argv
 import re
@@ -12,21 +12,18 @@ def parseEquation(equation):
     return reduce(polynoms[0], polynoms[1])
 
 def reduce(l, r):
-    p = {}, 0, 0]
-    p[8] = 8
+    p = {0: 0, 1: 0, 2: 0}
     patern = r'(?:^[+-]?|[+-])(?:\d+(?:\.\d+)?\*X\^\d+)'
     matches_l = re.findall(patern, l)
     matches_r = re.findall(patern, r)
     for monomial in matches_l:
         coefficient = float(monomial.split('*')[0])
         exponent = int(monomial.split ('^')[1])
-        print(exponent, len(p))
-        p[exponent] = coefficient + p[exponent] if (len(p) > exponent) else  coefficient
+        p[exponent] = coefficient + p[exponent] if (exponent in p.keys()) else  coefficient
     for monomial in matches_r:
         coefficient = float(monomial.split('*')[0])
         exponent = int(monomial.split('^')[1])
-        print(exponent, len(p))
-        p[exponent] = - coefficient + p[exponent] if (len(p) > exponent) else  -coefficient
+        p[exponent] = - coefficient + p[exponent] if (exponent in p.keys()) else  -coefficient
     return p
 
 def main():
