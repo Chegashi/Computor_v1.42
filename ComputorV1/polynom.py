@@ -1,6 +1,10 @@
+#!/goinfre/mochegri/miniconda3/envs/42AI-mochegri/bin/python3
 from cmath import sqrt as sqrt
 from math import trunc
 from fractions import Fraction as frac
+import numpy as np
+import matplotlib.pyplot as plt
+import os
 
 def printMonomial(coefficient, exponent) :
     if coefficient == 0:
@@ -34,11 +38,15 @@ def printComplexNumber(z):
 
 class polynom:
     def __init__(self, s):
+        if os.path.isfile('s.png'):
+            os.remove('s.png')
         self.s = s
-        self.delta = self.s[1] ** 2 - 4 * self.s[2] * self.s[0]
         self.ReducedForm()
         self.Degree()
+        self.delta = self.s[1] ** 2 - 4 * self.s[2] * self.s[0]
+        print('Δ = b^2 - 4 * a * c = {}^2 - 4 * {} * {} = {}'.format(self.s[1],self.s[2], self.s[0], self.delta))
         self.solution()
+        self.plot()
 
     def ReducedForm(self):
         ReducedForm = ''
@@ -65,10 +73,13 @@ class polynom:
         if (self.s[2] != 0) :
             if (self.delta == 0) :
                 self.X1 = self.X2 = -self.s[1] / (2 * self.s[2])
-                print ('Discriminant Δ = 0 is null, the only solution are:\n{}'.format(frac(str(self.X1))))
+                print('Discriminant Δ = 0 is null, the only solution are:\n{}'.format(frac(str(self.X1))))
+                print('X = -b / (2 * a) = - ({})/ 2 * {} = '.format(self.s[1], self.s[2]))
             else :
                 self.X1 = (-self.s[1] - sqrt(self.delta)) / (2 * self.s[2])
                 self.X2 = (-self.s[1] + sqrt(self.delta)) / (2 * self.s[2])
+                print('X1 = (-b - √Δ) / (2 * a) = - ({}) - √({}) / 2 * ({}) = {}'.format(self.s[1], self.delta, self.s[2], printComplexNumber(self.X1)))
+                print('X2 = (-b + √Δ) / (2 * a) = - ({}) + √({}) / 2 * ({}) = {}'.format(self.s[1], self.delta, self.s[2], printComplexNumber(self.X2)))
                 if (self.delta > 0) :
                     print('Discriminant Δ = {} is strictly positive , the two solutions are:'.format(self.delta))
                 else:
@@ -83,4 +94,23 @@ class polynom:
             else :
                 self.X1 = self.X2 = -self.s[0] / self.s[1]
             print('The solution is:\n{}'.format(self.X1))
- 
+
+    def plot(self):
+        a,b = 0,0
+        if (self.s[2] != 0) :
+            if (self.delta == 0) :
+                a, b = trunc(self.X1 - 5), trunc(self.X1 + 5)
+            else :
+                if (self.delta > 0):
+                    a, b = trunc(2 * self.X1.real - self.X2.real), trunc(2 * self.X2.real - self.X1.real)
+                else:
+                    if (self.X1.real == self.X2.real):
+                        a, b = trunc(self.X1.real - 5), trunc(self.X1.real + 5) +1
+            coefficients = [self.s[2], self.s[1], self.s[0]]
+            x = np.linspace(a, b, 100)
+            y = np.polyval(coefficients, x)
+            plt.plot(x, y)
+            y = np.polyval([0, 0, 0], x)
+            plt.plot(x, y)
+            plt.savefig('s.png')
+  
